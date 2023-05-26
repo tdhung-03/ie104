@@ -15,6 +15,7 @@ class Product(models.Model):
     description = models.TextField(null=True, blank=True)
     rating = models.IntegerField(default=0)
     price = models.IntegerField()
+    brand = models.CharField(max_length=200)
 
     def __str__(self):
         return self.name
