@@ -5,7 +5,13 @@ from rest_framework import generics
 
 class ProductList(generics.ListAPIView):
     queryset = Product.objects.all()
-    serializer_class = ProductSerializer
+    serializer_class = ProductSerializerForProductList
+
+
+class AProduct(generics.RetrieveAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializerForProduct
+    lookup_field = 'id'
 
 
 class CategoryList(generics.ListAPIView):
