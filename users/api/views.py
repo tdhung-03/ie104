@@ -1,19 +1,16 @@
 from django.contrib.auth import authenticate
-from rest_framework.views import APIView
+from rest_framework import generics, permissions
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
 from rest_framework_jwt.settings import api_settings
-from .serializers import *
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.generics import CreateAPIView
+from .serializers import *
 
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 
 
-class LoginUser(APIView):
-    permission_classes = (AllowAny,)
+class LoginUser(generics.GenericAPIView):
+    permission_classes = (permissions.AllowAny,)
 
     def post(self, request):
         username = request.data.get('username')
@@ -29,14 +26,14 @@ class LoginUser(APIView):
         return Response({'error': 'Invalid credentials'}, status=400)
 
 
-class RegisterUser(CreateAPIView):
-    permission_classes = (AllowAny,)
+class RegisterUser(generics.CreateAPIView):
+    permission_classes = (permissions.AllowAny,)
     serializer_class = ProfileSerializer
 
 
-class ProfileView(APIView):
-    permission_classes = (IsAuthenticated,)
+class ProfileView(generics.RetrieveAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = ProfileSerializer
 
-    def get(self, request):
-        serializer = ProfileSerializer(request.user.profile)
-        return Response(serializer.data)
+    def get_object(self):
+        return self.request.user.profile
