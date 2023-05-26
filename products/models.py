@@ -13,6 +13,7 @@ class Product(models.Model):
     categories = models.ManyToManyField(Category, blank=True)
     name = models.CharField(max_length=200)
     description = models.TextField(null=True, blank=True)
+    rating = models.IntegerField(default=0)
     price = models.IntegerField()
 
     def __str__(self):
