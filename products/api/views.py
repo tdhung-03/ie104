@@ -8,22 +8,10 @@ class ProductList(generics.ListAPIView):
     serializer_class = ProductSerializerForProductList
 
 
-class AProduct(generics.RetrieveAPIView):
+class ProductDetail(generics.RetrieveAPIView):
     queryset = Product.objects.all()
-    serializer_class = ProductSerializerForProduct
+    serializer_class = ProductSerializerForProductDetail
     lookup_field = 'id'
 
 
-class CategoryList(generics.ListAPIView):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
 
-
-class ProductCreate(generics.CreateAPIView):
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
-
-
-class CategoryCreate(generics.CreateAPIView):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
