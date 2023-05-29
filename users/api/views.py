@@ -6,6 +6,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import *
 from django.http import JsonResponse
 from django.contrib.auth.models import User
+import json
 
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
@@ -42,8 +43,10 @@ class ProfileView(generics.RetrieveAPIView):
 
 
 def validate_username(request):
-    username = request.GET.get('username', None)
-    data = {
-        'is_taken': User.objects.filter(username__iexact=username).exists()
-    }
-    return JsonResponse(data)
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        username = data.get('username', None)
+        if username:
+            is_taken = User.objects.filter(username__iexact=username).exists()
+            return JsonResponse({'is_taken': is_taken})
+    return JsonResponse({'error': 'Invalid request'})
