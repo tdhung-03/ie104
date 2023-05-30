@@ -7,7 +7,7 @@ from purchase.models import *
 from users.models import *
 from products.models import *
 from purchase.api.serializers import *
-
+from django.db.models import Sum
 
 class AddToCartAPIView(generics.CreateAPIView):
     queryset = CartDetail.objects.all()
@@ -32,7 +32,11 @@ class AddToCartAPIView(generics.CreateAPIView):
             # If it's a new product, create a new cart item
             cart_item.quantity = quantity
 
+        cart_item.sub_price = cart_item.quantity * cart_item.product.price
         cart_item.save()
+
+        cart.total_price = cart.CartDetails.aggregate(total=Sum('sub_price'))['total']
+        cart.save()
 
         serializer = CartSerializer(cart)
         return Response(serializer.data)
