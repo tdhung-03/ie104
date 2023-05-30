@@ -77,3 +77,25 @@ class ProductListAPIView(generics.ListAPIView):
 class CartFullView(generics.ListAPIView):
     queryset = Cart.objects.all()
     serializer_class = CartFullSerializer
+
+
+class RemoveFromCartAPIView(generics.DestroyAPIView):
+    queryset = CartDetail.objects.all()
+
+    @method_decorator(login_required)
+    @method_decorator(ensure_csrf_cookie)
+    def delete(self, request, *args, **kwargs):
+        cart_detail_id = kwargs.get('pk')
+
+        try:
+            cart_detail = CartDetail.objects.get(pk=cart_detail_id)
+            sub_price = cart_detail.sub_price
+            cart_detail.delete()
+
+            cart = Cart.objects.get(owner=request.user.profile)
+            cart.total_price -= sub_price
+            cart.save()
+
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except CartDetail.DoesNotExist:
+            return Response({"error": "Cart detail not found."}, status=status.HTTP_404_NOT_FOUND)

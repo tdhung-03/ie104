@@ -59,7 +59,7 @@ class CartDetailForCartSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CartDetail
-        fields = ["product", "quantity", "sub_price"]
+        fields = ["pk", "product", "quantity", "sub_price"]
 
 
 class CartFullSerializer(serializers.ModelSerializer):
