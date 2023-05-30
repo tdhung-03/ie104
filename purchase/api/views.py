@@ -55,6 +55,10 @@ class ConvertCartToOrderAPIView(generics.CreateAPIView):
                 sub_price=cart_detail.product.price * cart_detail.quantity
             )
 
+        for order_detail in order.OrderDetails.all():
+            order.total_price += order_detail.sub_price
+        order.save()
+
         cart.delete()
 
         serializer = OrderSerializer(order)
