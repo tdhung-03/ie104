@@ -8,12 +8,14 @@ from users.models import *
 class Cart(models.Model):
     owner = models.ForeignKey(Profile, null=True, blank=True, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+    total_price = models.IntegerField()
 
 
 class CartDetail(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="CartDetails")
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(null=True, blank=True)
+    sub_price = models.IntegerField()
 
 
 class Order(models.Model):
