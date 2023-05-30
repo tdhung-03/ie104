@@ -21,7 +21,17 @@ class AddToCartAPIView(generics.CreateAPIView):
 
         cart, _ = Cart.objects.get_or_create(owner=request.user.profile)
         product = Product.objects.get(pk=product_id)
-        cart_item, created = CartDetail.objects.get_or_create(cart=cart, product=product, quantity=quantity)
+
+        # Check if the product already exists in the cart
+        cart_item, created = CartDetail.objects.get_or_create(cart=cart, product=product)
+
+        if not created:
+            # If the product already exists, update the quantity by adding the new quantity
+            cart_item.quantity += quantity
+        else:
+            # If it's a new product, create a new cart item
+            cart_item.quantity = quantity
+
         cart_item.save()
 
         serializer = CartSerializer(cart)
