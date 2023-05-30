@@ -9,6 +9,7 @@ from products.models import *
 from purchase.api.serializers import *
 from django.db.models import Sum
 
+
 class AddToCartAPIView(generics.CreateAPIView):
     queryset = CartDetail.objects.all()
     serializer_class = CartDetailSerializer
@@ -56,11 +57,10 @@ class ConvertCartToOrderAPIView(generics.CreateAPIView):
                 order=order,
                 product=cart_detail.product,
                 quantity=cart_detail.quantity,
-                sub_price=cart_detail.product.price * cart_detail.quantity
+                sub_price=cart_detail.sub_price
             )
 
-        for order_detail in order.OrderDetails.all():
-            order.total_price += order_detail.sub_price
+        order.total_price = cart.total_price
         order.save()
 
         cart.delete()
