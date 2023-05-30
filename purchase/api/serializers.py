@@ -46,3 +46,25 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = '__all__'
+
+
+class ProductForCartSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ["name"]
+
+
+class CartDetailForCartSerializer(serializers.ModelSerializer):
+    product = ProductForCartSerializer()
+
+    class Meta:
+        model = CartDetail
+        fields = ["product", "quantity", "sub_price"]
+
+
+class CartFullSerializer(serializers.ModelSerializer):
+    CartDetails = CartDetailForCartSerializer(many=True)
+
+    class Meta:
+        model = Cart
+        fields = ["CartDetails", "total_price"]

@@ -72,3 +72,8 @@ class ConvertCartToOrderAPIView(generics.CreateAPIView):
 class ProductListAPIView(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+
+
+class CartFullView(generics.ListAPIView):
+    queryset = Cart.objects.all()
+    serializer_class = CartFullSerializer
