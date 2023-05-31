@@ -5,7 +5,7 @@ from rest_framework import serializers
 class ProductSerializerForProductList(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ["name", "rating", "price"]
+        fields = ["name", "rating", "price", "image_public_id"]
 
 
 class CategorySerializerForProductDetail(serializers.ModelSerializer):
@@ -19,7 +19,7 @@ class ProductSerializerForProductDetail(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ["categories", "name", "brand", "price", "rating", "description"]
+        fields = ["categories", "name", "brand", "price", "rating", "description", "image_public_id"]
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -31,7 +31,7 @@ class CategorySerializer(serializers.ModelSerializer):
 class ProductBasedCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['name', 'rating', 'price']
+        fields = ['name', 'rating', 'price', "image_public_id"]
 
 
 class CategoryForQuerySerializer(serializers.ModelSerializer):
