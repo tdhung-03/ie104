@@ -26,3 +26,17 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['id', 'name']
+
+
+class ProductBasedCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ['name', 'rating', 'price']
+
+
+class CategoryForQuerySerializer(serializers.ModelSerializer):
+    products = ProductBasedCategorySerializer(many=True)
+
+    class Meta:
+        model = Category
+        fields = ['name', 'products']

@@ -17,3 +17,9 @@ class ProductDetail(generics.RetrieveAPIView):
 class CategoryList(generics.ListAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
+
+class CategoryForQuery(generics.RetrieveAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategoryForQuerySerializer
+    lookup_field = 'name'
