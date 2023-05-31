@@ -16,6 +16,8 @@ class Product(models.Model):
     rating = models.IntegerField(default=0)
     price = models.IntegerField()
     brand = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='products/images')
+    image_public_id = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
         return self.name
