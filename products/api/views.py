@@ -14,4 +14,6 @@ class ProductDetail(generics.RetrieveAPIView):
     lookup_field = 'id'
 
 
-
+class CategoryList(generics.ListAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
