@@ -7,6 +7,7 @@ from .serializers import *
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 import json
+from django.views.decorators.csrf import csrf_exempt
 
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
@@ -42,6 +43,7 @@ class ProfileView(generics.RetrieveAPIView):
         return self.request.user.profile
 
 
+@csrf_exempt
 def validate_username(request):
     if request.method == 'POST':
         data = json.loads(request.body)
