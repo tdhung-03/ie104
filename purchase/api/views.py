@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
-from rest_framework import generics, status
+from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 from purchase.models import *
 from users.models import *
@@ -75,8 +75,21 @@ class ProductListAPIView(generics.ListAPIView):
 
 
 class CartFullView(generics.ListAPIView):
-    queryset = Cart.objects.all()
+    permission_classes = (permissions.IsAuthenticated,)
     serializer_class = CartFullSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Cart.objects.filter(owner=user.profile)
+
+
+class OrderFullView(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = OrderSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Order.objects.filter(owner=user.profile)
 
 
 class RemoveFromCartAPIView(generics.DestroyAPIView):
